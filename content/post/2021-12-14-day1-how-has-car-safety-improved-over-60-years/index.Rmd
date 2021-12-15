@@ -1,0 +1,147 @@
+---
+title: Day1 - How Has Car Safety Improved Over 60 Years?
+author: Vipul Pandey
+date: '2021-12-14'
+slug: day1-how-has-car-safety-improved-over-60-years
+categories:
+  - R
+tags:
+  - Data Exploration
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+```{r}
+# imports 
+
+options(scipen = 999)
+library(dplyr)
+library(janitor)
+library(ggplot2)
+
+# for creating beautiful tables
+library(kableExtra)
+```
+
+***Source Visualization***
+https://www.visualcapitalist.com/how-has-car-safety-improved-over-60-years/
+
+## About Data 
+
+Source :
+https://www.bts.gov/content/motor-vehicle-safety-data
+
+
+Loading the data :
+
+```{r data}
+library(readxl)
+day1 <- read_excel("data/day1.xlsx", skip = 1,n_max = 8)
+
+
+```
+
+Cleaning data
+
+```{r}
+# first column as Years
+colnames(day1)[colnames(day1) == "...1"] <- "Years"
+
+```
+
+Total number of missing values are :
+
+```{r}
+sum(is.na(day1))
+```
+Replacing all "N" with NA
+```{r}
+day1[day1 == "N"] <- NA
+```
+
+
+checking col data types
+
+```{r, echo=FALSE}
+str(day1)
+```
+converting character columns into numerics
+
+```{r, echo=FALSE}
+day1$`1960` <- as.numeric(day1$`1960`)
+day1$`1965` <- as.numeric(day1$`1965`)
+day1$`1970` <- as.numeric(day1$`1970`)
+day1$`1975` <- as.numeric(day1$`1975`)
+day1$`1980` <- as.numeric(day1$`1980`)
+day1$`1985` <- as.numeric(day1$`1985`)
+head(day1)
+```
+
+
+## Transpose and further ops:
+
+```{r , echo=FALSE}
+day1_t <- as.data.frame(t(day1))  # transpose
+
+```
+
+Cleaning ops after transform
+```{r}
+# changing colnames
+colnames(day1_t) <- day1_t[1,]
+
+# removing first row
+day1_t <- day1_t[-1,]
+
+# using index as column 
+day1_t <- cbind(Years = rownames(day1_t), day1_t)
+rownames(day1_t) <- 1:nrow(day1_t)
+
+# convert years to numeric
+day1_t$Years <- as.numeric(day1_t$Years)
+
+# final version after cleaning col names
+final <- clean_names(day1_t)
+```
+
+## Analysis
+
+
+Changing data types
+
+```{r}
+
+```
+```{r}
+final_10yrs <- final %>%  filter(years %in% c(1960, 1970, 1980, 1990, 2000, 2010, 2019)) 
+
+final_10yrs$years <- as.numeric(final_10yrs$years)
+final_10yrs$fatalities <- as.numeric(final_10yrs$fatalities)
+final_10yrs$crashes <- as.numeric(final_10yrs$crashes)
+final_10yrs$fatalities_2 <- as.numeric(final_10yrs$fatalities_2)
+final_10yrs$vehicle_miles_millions <- as.numeric(final_10yrs$vehicle_miles_millions)
+
+```
+
+### Year vs Fatalities per million miles
+```{r}
+
+final_10yrs %>%  
+  select(years, fatalities_2) %>% 
+  kbl() %>% 
+  kable_material(c("striped", "hover"))
+```
+
+## Total number of miles driven each year
+
+```{r}
+ggplot(data = final_10yrs, mapping = aes(x = as.character(years), y = vehicle_miles_millions)) +
+  geom_bar(stat = "identity") +
+  coord_flip() + 
+  scale_y_reverse()
+```
+
+## Extra Questions that can be answered..

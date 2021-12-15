@@ -1,0 +1,192 @@
+---
+title: Day1 - How Has Car Safety Improved Over 60 Years?
+author: Vipul Pandey
+date: '2021-12-14'
+slug: day1-how-has-car-safety-improved-over-60-years
+categories:
+  - R
+tags:
+  - Data Exploration
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
+<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
+
+
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre><code>## Warning: package &#39;janitor&#39; was built under R version 4.1.2</code></pre>
+<pre><code>## 
+## Attaching package: &#39;janitor&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     chisq.test, fisher.test</code></pre>
+<pre><code>## Warning: package &#39;kableExtra&#39; was built under R version 4.1.2</code></pre>
+<pre><code>## 
+## Attaching package: &#39;kableExtra&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     group_rows</code></pre>
+<p><strong><em>Source Visualization</em></strong>
+<a href="https://www.visualcapitalist.com/how-has-car-safety-improved-over-60-years/" class="uri">https://www.visualcapitalist.com/how-has-car-safety-improved-over-60-years/</a></p>
+<div id="about-data" class="section level2">
+<h2>About Data</h2>
+<p>Source :
+<a href="https://www.bts.gov/content/motor-vehicle-safety-data" class="uri">https://www.bts.gov/content/motor-vehicle-safety-data</a></p>
+<p>Loading the data :</p>
+<pre><code>## New names:
+## * `` -&gt; ...1</code></pre>
+<p>Cleaning data</p>
+<p>Total number of missing values are :</p>
+<pre><code>## [1] 36</code></pre>
+<p>Replacing all “N” with NA</p>
+<p>checking col data types</p>
+<pre><code>## tibble [8 x 37] (S3: tbl_df/tbl/data.frame)
+##  $ Years: chr [1:8] &quot;Fatalities&quot; &quot;Injured persons&quot; &quot;Crashes&quot; &quot;Vehicle-miles (millions)&quot; ...
+##  $ 1960 : chr [1:8] &quot;36399&quot; NA NA &quot;718763&quot; ...
+##  $ 1965 : chr [1:8] &quot;47089&quot; NA NA &quot;887811&quot; ...
+##  $ 1970 : chr [1:8] &quot;52627&quot; NA NA &quot;1109724&quot; ...
+##  $ 1975 : chr [1:8] &quot;44525&quot; NA NA &quot;1327664&quot; ...
+##  $ 1980 : chr [1:8] &quot;51091&quot; NA NA &quot;1527295&quot; ...
+##  $ 1985 : chr [1:8] &quot;43825&quot; NA NA &quot;1774826&quot; ...
+##  $ 1990 : num [1:8] 44599 3246000 6471000 2144362 NA ...
+##  $ 1991 : num [1:8] 41508 3107000 6117000 2172050 NA ...
+##  $ 1992 : num [1:8] 39250 3079000 6000000 2247151 NA ...
+##  $ 1993 : num [1:8] 40150 3163000 6106000 2296378 NA ...
+##  $ 1994 : num [1:8] 40716 3275000 6496000 2357588 NA ...
+##  $ 1995 : num [1:8] 41817 3476000 6699000 2422823 NA ...
+##  $ 1996 : num [1:8] 42065 3480000 6770000 2484080 NA ...
+##  $ 1997 : num [1:8] 42013 3360000 6624000 2552233 NA ...
+##  $ 1998 : num [1:8] 41501 3199000 6335000 2628148 NA ...
+##  $ 1999 : num [1:8] 41717 3250000 6279000 2690241 NA ...
+##  $ 2000 : num [1:8] 41945 3194000 6394000 2746925 NA ...
+##  $ 2001 : num [1:8] 42196 3042000 6323000 2795610 NA ...
+##  $ 2002 : num [1:8] 43005 2939000 6316000 2855508 NA ...
+##  $ 2003 : num [1:8] 42884 2902000 6328000 2890221 NA ...
+##  $ 2004 : num [1:8] 42836 2802000 6181000 2964788 NA ...
+##  $ 2005 : num [1:8] 43510 2709000 6159000 2989430 NA ...
+##  $ 2006 : num [1:8] 42708 2583000 5973000 3014371 NA ...
+##  $ 2007 : num [1:8] 41259 2499000 6024000 3031124 NA ...
+##  $ 2008 : num [1:8] 37423 2356000 5811000 2976528 NA ...
+##  $ 2009 : num [1:8] 33883 2224000 5505000 2956764 NA ...
+##  $ 2010 : num [1:8] 32999 2248000 5419000 2966506 NA ...
+##  $ 2011 : num [1:8] 32479 2227000 5338000 2946131 NA ...
+##  $ 2012 : num [1:8] 33782 2369000 5615000 2968815 NA ...
+##  $ 2013 : num [1:8] 32893 2319000 5687000 2988280 NA ...
+##  $ 2014 : num [1:8] 32744 2343000 6064000 3025656 NA ...
+##  $ 2015 : num [1:8] 35484 2455000 6296000 3095373 NA ...
+##  $ 2016 : num [1:8] 37806 3062000 6821000 3174408 NA ...
+##  $ 2017 : num [1:8] 37473 2745000 6453000 3212347 NA ...
+##  $ 2018 : num [1:8] 36835 2710000 6735000 3240327 NA ...
+##  $ 2019 : num [1:8] 36096 2740000 6756000 3261772 NA ...</code></pre>
+<p>converting character columns into numerics</p>
+<pre><code>## # A tibble: 6 x 37
+##   Years   `1960`  `1965`  `1970`  `1975`  `1980`  `1985`  `1990`  `1991`  `1992`
+##   &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Fatal~  3.64e4  4.71e4  5.26e4  4.45e4  5.11e4  4.38e4  4.46e4  4.15e4  3.92e4
+## 2 Injur~ NA      NA      NA      NA      NA      NA       3.25e6  3.11e6  3.08e6
+## 3 Crash~ NA      NA      NA      NA      NA      NA       6.47e6  6.12e6  6   e6
+## 4 Vehic~  7.19e5  8.88e5  1.11e6  1.33e6  1.53e6  1.77e6  2.14e6  2.17e6  2.25e6
+## 5 Rates~ NA      NA      NA      NA      NA      NA      NA      NA      NA     
+## 6 Fatal~  5.06e0  5.30e0  4.74e0  3.35e0  3.35e0  2.47e0  2.08e0  1.91e0  1.75e0
+## # ... with 27 more variables: 1993 &lt;dbl&gt;, 1994 &lt;dbl&gt;, 1995 &lt;dbl&gt;, 1996 &lt;dbl&gt;,
+## #   1997 &lt;dbl&gt;, 1998 &lt;dbl&gt;, 1999 &lt;dbl&gt;, 2000 &lt;dbl&gt;, 2001 &lt;dbl&gt;, 2002 &lt;dbl&gt;,
+## #   2003 &lt;dbl&gt;, 2004 &lt;dbl&gt;, 2005 &lt;dbl&gt;, 2006 &lt;dbl&gt;, 2007 &lt;dbl&gt;, 2008 &lt;dbl&gt;,
+## #   2009 &lt;dbl&gt;, 2010 &lt;dbl&gt;, 2011 &lt;dbl&gt;, 2012 &lt;dbl&gt;, 2013 &lt;dbl&gt;, 2014 &lt;dbl&gt;,
+## #   2015 &lt;dbl&gt;, 2016 &lt;dbl&gt;, 2017 &lt;dbl&gt;, 2018 &lt;dbl&gt;, 2019 &lt;dbl&gt;</code></pre>
+</div>
+<div id="transpose-and-further-ops" class="section level2">
+<h2>Transpose and further ops:</h2>
+<p>Cleaning ops after transform</p>
+</div>
+<div id="analysis" class="section level2">
+<h2>Analysis</h2>
+<p>Changing data types</p>
+<div id="year-vs-fatalities-per-million-miles" class="section level3">
+<h3>Year vs Fatalities per million miles</h3>
+<table class=" lightable-material lightable-striped lightable-hover" style="font-family: &quot;Source Sans Pro&quot;, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+years
+</th>
+<th style="text-align:right;">
+fatalities_2
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1960
+</td>
+<td style="text-align:right;">
+5.064117
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1970
+</td>
+<td style="text-align:right;">
+4.742350
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1980
+</td>
+<td style="text-align:right;">
+3.345195
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1990
+</td>
+<td style="text-align:right;">
+2.079826
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2000
+</td>
+<td style="text-align:right;">
+1.526980
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2010
+</td>
+<td style="text-align:right;">
+1.112386
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2019
+</td>
+<td style="text-align:right;">
+1.106638
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="total-number-of-miles-driven-each-year" class="section level2">
+<h2>Total number of miles driven each year</h2>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+<div id="extra-questions-that-can-be-answered.." class="section level2">
+<h2>Extra Questions that can be answered..</h2>
+</div>
