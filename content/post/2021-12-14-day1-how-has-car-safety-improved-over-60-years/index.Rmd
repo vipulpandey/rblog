@@ -2,20 +2,27 @@
 title: Day1 - How Has Car Safety Improved Over 60 Years?
 author: Vipul Pandey
 date: '2021-12-14'
-slug: day1-how-has-car-safety-improved-over-60-years
 categories:
   - R
+  - Automative
 tags:
   - Data Exploration
+  - Infographics
+slug: day1-how-has-car-safety-improved-over-60-years
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, message=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+
+# imports ![car safety](images/car-safety.jpg)
 ```
 
+![](images/car-safety.jpg)
 
-```{r}
-# imports 
+This is the first article of Series "21 challenge of Data Analysis" in which I will be looking into an interesting existing dataset to extract useful information and creating useful visualization, and in the process sharpen my "Analytical skills".
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 options(scipen = 999)
 library(dplyr)
@@ -26,10 +33,14 @@ library(ggplot2)
 library(kableExtra)
 ```
 
+
+
 ***Source Visualization***
 https://www.visualcapitalist.com/how-has-car-safety-improved-over-60-years/
 
 ## About Data 
+
+In this post, we visualized data from the U.S. Bureau of Transportation to show how breakthroughs in car safety have drastically reduced the number of motor vehicle fatalities.
 
 Source :
 https://www.bts.gov/content/motor-vehicle-safety-data
@@ -37,7 +48,7 @@ https://www.bts.gov/content/motor-vehicle-safety-data
 
 Loading the data :
 
-```{r data}
+```{r data, echo=TRUE, results='hide', message=FALSE}
 library(readxl)
 day1 <- read_excel("data/day1.xlsx", skip = 1,n_max = 8)
 
@@ -65,7 +76,7 @@ day1[day1 == "N"] <- NA
 
 checking col data types
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE}
 str(day1)
 ```
 converting character columns into numerics
